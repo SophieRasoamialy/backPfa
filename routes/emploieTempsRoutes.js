@@ -8,7 +8,8 @@ router.post('/', emploiTempsController.createEmploiTemps);
 // Route pour récupérer tous les emplois du temps par niveau
 router.get('/:niveau', emploiTempsController.getAllEmploiTemps);
 
-// Route pour récupérer un emploi du temps par son ID
+router.get('/etudiant/:niveau', emploiTempsController.getAllEmploiTempsEtudiant);
+// Route pour récupérer un emploi du temps par son IDe
 router.get('/id/:edtId', emploiTempsController.getEmploiTempsById);
 
 // Route pour mettre à jour un emploi du temps par son ID

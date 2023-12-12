@@ -21,8 +21,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Niveaux', // Nom de la table de référence (assurez-vous que c'est correct)
-          key: 'id_niveau' // Colonne à laquelle cette clé étrangère fait référence dans la table Niveaux
+          model: 'Niveaux',
+          key: 'id_niveau'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
@@ -31,8 +31,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Matieres', // Nom de la table de référence (assurez-vous que c'est correct)
-          key: 'id_matiere' // Colonne à laquelle cette clé étrangère fait référence dans la table Matieres
+          model: 'Matieres', 
+          key: 'id_matiere' 
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
@@ -41,8 +41,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Salles', // Nom de la table de référence (assurez-vous que c'est correct)
-          key: 'num_salle' // Colonne à laquelle cette clé étrangère fait référence dans la table Salles
+          model: 'Salles', 
+          key: 'num_salle' 
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'

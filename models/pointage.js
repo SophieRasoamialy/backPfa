@@ -30,7 +30,7 @@ Pointage.init(
     },
     pointage_sortie: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
   },
   {

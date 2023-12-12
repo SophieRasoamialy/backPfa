@@ -21,8 +21,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Niveaux', // Nom de la table de référence (assurez-vous que c'est correct)
-          key: 'id_niveau' // Colonne à laquelle cette clé étrangère fait référence dans la table Niveaux
+          model: 'Niveaux',
+          key: 'id_niveau'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'

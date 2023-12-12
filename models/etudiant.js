@@ -23,6 +23,10 @@ Etudiant.init(
       type: DataTypes.STRING,
       allowNull: false
     },
+    photo_etudiant: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     id_niveau: {
       type: DataTypes.INTEGER,
       allowNull: false

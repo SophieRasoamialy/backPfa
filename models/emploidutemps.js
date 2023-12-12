@@ -7,6 +7,7 @@ class EmploiDuTemps extends Model {
     EmploiDuTemps.belongsTo(models.Niveau, { foreignKey: 'id_niveau' });
     EmploiDuTemps.belongsTo(models.Matiere, { foreignKey: 'id_matiere' });
     EmploiDuTemps.belongsTo(models.Salle, { foreignKey: 'id_salle' });
+    EmploiDuTemps.hasMany(models.Pointage, { foreignKey: 'id_edt' });
   }
 }
 

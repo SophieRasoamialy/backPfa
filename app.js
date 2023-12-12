@@ -25,6 +25,8 @@ app.use('/api/edt', edtRoutes);
 const salleRoutes = require('./routes/salleRoutes');
 app.use('/api/salles', salleRoutes);
 
+const pointageRoutes = require('./routes/pointageRoutes');
+app.use('/api/pointages', pointageRoutes);
 
 app.listen(port, () => {
   console.log(`Serveur Express en cours d'exécution sur le port ${port}`);
