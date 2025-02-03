@@ -53,10 +53,10 @@ async function getAbsentStudentTimetable(req, res) {
 
     const query = `
     SELECT emploidutemps.date, emploidutemps.heure, matieres.id_matiere, matieres.matiere
-    FROM emploidutemps
-    INNER JOIN matieres ON emploidutemps.id_matiere = matieres.id_matiere
-    LEFT JOIN pointages ON emploidutemps.id_edt = pointages.id_edt AND pointages.id_etudiant = :etudiantId
-    WHERE emploidutemps.id_niveau = (SELECT id_niveau FROM etudiants WHERE id_etudiant = :etudiantId)
+    FROM EmploiDuTemps emploidutemps
+    INNER JOIN Matieres matieres ON emploidutemps.id_matiere = matieres.id_matiere
+    LEFT JOIN Pointages pointages ON emploidutemps.id_edt = pointages.id_edt AND pointages.id_etudiant = :etudiantId
+    WHERE emploidutemps.id_niveau = (SELECT id_niveau FROM Etudiants WHERE id_etudiant = :etudiantId)
       AND pointages.id_pointage IS NULL
     `;
 
@@ -239,7 +239,7 @@ async function getPastCoursesCountForStudentHelper(etudiantId) {
       const pastCoursesCount = await EmploiDuTemps.count({
           where: {
               id_niveau: {
-                  [Op.in]: sequelize.literal(`(SELECT id_niveau FROM etudiants WHERE id_etudiant = ${etudiantId})`)
+                  [Op.in]: sequelize.literal(`(SELECT id_niveau FROM Etudiants WHERE id_etudiant = ${etudiantId})`)
               },
               date: {
                   [Op.lt]: new Date(), // Vérifier la date actuelle
@@ -280,7 +280,7 @@ async function getPastCoursesCountForStudent(req, res) {
       const pastCoursesCount = await EmploiDuTemps.count({
           where: {
               id_niveau: {
-                  [Op.in]: sequelize.literal(`(SELECT id_niveau FROM etudiants WHERE id_etudiant = ${etudiantId})`)
+                  [Op.in]: sequelize.literal(`(SELECT id_niveau FROM Etudiants WHERE id_etudiant = ${etudiantId})`)
               },
               date: {
                   [Op.lt]: new Date(), // Vérifier la date actuelle
@@ -302,11 +302,11 @@ async function getUnattendedCoursesForStudent(req, res) {
       // Utiliser une requête SQL pour obtenir les cours passés de l'étudiant sans pointage associé
       const unattendedCourses = await sequelize.query(
           `SELECT edt.*, m.matiere, e.nom_enseignant, e.prenom_enseignant
-          FROM emploidutemps edt
-          LEFT JOIN pointages p ON edt.id_edt = p.id_edt AND p.id_etudiant = :etudiantId
-          LEFT JOIN matieres m ON edt.id_matiere = m.id_matiere
-          LEFT JOIN enseignants e ON m.id_enseignant = e.id_enseignant
-          WHERE edt.id_niveau IN (SELECT id_niveau FROM etudiants WHERE id_etudiant = :etudiantId)
+          FROM EmploiDuTemps edt
+          LEFT JOIN Pointages p ON edt.id_edt = p.id_edt AND p.id_etudiant = :etudiantId
+          LEFT JOIN Matieres m ON edt.id_matiere = m.id_matiere
+          LEFT JOIN Enseignants e ON m.id_enseignant = e.id_enseignant
+          WHERE edt.id_niveau IN (SELECT id_niveau FROM Etudiants WHERE id_etudiant = :etudiantId)
             AND edt.date < NOW()
             AND p.id_edt IS NULL`,
           {

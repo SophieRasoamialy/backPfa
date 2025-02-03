@@ -21,7 +21,7 @@ Salle.init(
   {
     sequelize,
     modelName: 'Salle',
-    tableName: 'salles', 
+    tableName: 'Salles', 
   }
 );
 

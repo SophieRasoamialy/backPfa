@@ -46,7 +46,7 @@ EmploiDuTemps.init(
   {
     sequelize,
     modelName: 'EmploiDuTemps',
-    tableName: 'emploidutemps'
+    tableName: 'EmploiDuTemps'
   }
 );
 

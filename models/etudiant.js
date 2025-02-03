@@ -35,7 +35,7 @@ Etudiant.init(
   {
     sequelize,
     modelName: 'Etudiant',
-    tableName: 'etudiants'
+    tableName: 'Etudiants'
   }
 );
 

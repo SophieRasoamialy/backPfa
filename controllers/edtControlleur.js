@@ -25,10 +25,10 @@ async function getAllEmploiTemps(req, res) {
 
     const query = `
       SELECT edt.id_edt, edt.date, edt.heure, edt.id_matiere, mat.matiere, salle.num_salle, mat.id_enseignant, enseignant.nom_enseignant, enseignant.prenom_enseignant
-      FROM emploidutemps edt
-      INNER JOIN matieres mat ON edt.id_matiere = mat.id_matiere
-      INNER JOIN salles salle ON edt.id_salle = salle.num_salle
-      INNER JOIN enseignants enseignant ON mat.id_enseignant = enseignant.id_enseignant
+      FROM EmploiDuTemps edt
+      INNER JOIN Matieres mat ON edt.id_matiere = mat.id_matiere
+      INNER JOIN Salles salle ON edt.id_salle = salle.num_salle
+      INNER JOIN Enseignants enseignant ON mat.id_enseignant = enseignant.id_enseignant
       WHERE edt.id_niveau = :niveauId
          AND DATE(edt.date) BETWEEN :startDate AND :endDate`; // Ajout de la condition de date
 
@@ -50,10 +50,10 @@ async function getAllEmploiTempsEtudiant(req, res) {
     const endDate = req.query.date2;
     const query = `
       SELECT edt.id_edt, edt.date, edt.heure,edt.heure_fin, edt.id_matiere, mat.matiere, salle.num_salle, mat.id_enseignant, enseignant.nom_enseignant, enseignant.prenom_enseignant
-      FROM emploidutemps edt
-      INNER JOIN matieres mat ON edt.id_matiere = mat.id_matiere
-      INNER JOIN salles salle ON edt.id_salle = salle.num_salle
-      INNER JOIN enseignants enseignant ON mat.id_enseignant = enseignant.id_enseignant
+      FROM EmploiDuTemps edt
+      INNER JOIN Matieres mat ON edt.id_matiere = mat.id_matiere
+      INNER JOIN Salles salle ON edt.id_salle = salle.num_salle
+      INNER JOIN Enseignants enseignant ON mat.id_enseignant = enseignant.id_enseignant
       WHERE edt.id_niveau = :niveauId
          AND DATE(edt.date) BETWEEN :startDate AND :endDate`;
 

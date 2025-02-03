@@ -34,14 +34,19 @@ async function getEnseignantsPagine(req, res) {
 
   try {
     const enseignants = await sequelize.query(
-      `SELECT e.id_enseignant as id_enseignant, e.nom_enseignant as nom_enseignant, e.prenom_enseignant as prenom_enseignant, GROUP_CONCAT(m.matiere SEPARATOR ', ')  as matiere, m.id_matiere as id_matiere
-      FROM enseignants e
-      LEFT JOIN matieres m ON e.id_enseignant = m.id_enseignant 
-      GROUP BY e.id_enseignant, e.nom_enseignant, e.prenom_enseignant
-      ORDER BY e.id_enseignant DESC
-      LIMIT :limit OFFSET :offset `,
+      `SELECT e.id_enseignant as id_enseignant, 
+              e.nom_enseignant as nom_enseignant, 
+              e.prenom_enseignant as prenom_enseignant, 
+              GROUP_CONCAT(m.matiere SEPARATOR ', ') as matiere, 
+              m.id_matiere as id_matiere
+       FROM Enseignants e
+       LEFT JOIN Matieres m ON e.id_enseignant = m.id_enseignant 
+       GROUP BY e.id_enseignant, e.nom_enseignant, e.prenom_enseignant, m.id_matiere
+       ORDER BY e.id_enseignant DESC
+       LIMIT :limit OFFSET :offset`,
       { replacements: { limit, offset }, type: QueryTypes.SELECT }
     );
+    
 
     res.json(enseignants);
   } catch (error) {

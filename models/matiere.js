@@ -32,7 +32,7 @@ Matiere.init(
   {
     sequelize,
     modelName: 'Matiere',
-    tableName: 'matieres'
+    tableName: 'Matieres'
   }
 );
 

@@ -33,8 +33,8 @@ async function getMatieresByNiveau(req, res) {
 
     const query = `
       SELECT matieres.id_matiere as id_matiere, matieres.matiere as matiere, matieres.id_enseignant as id_enseignant, enseignants.nom_enseignant as nom_enseignant, enseignants.prenom_enseignant as prenom_enseignant
-      FROM matieres
-      INNER JOIN enseignants ON matieres.id_enseignant = enseignants.id_enseignant
+      FROM  Matieres matieres
+      INNER JOIN Enseignants enseignants ON matieres.id_enseignant = enseignants.id_enseignant
       WHERE matieres.id_niveau = :niveau ORDER BY matieres.id_matiere DESC
     `;
 

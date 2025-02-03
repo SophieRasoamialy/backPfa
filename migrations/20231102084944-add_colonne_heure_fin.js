@@ -3,13 +3,13 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('emploidutemps', 'heure_fin', {
+    await queryInterface.addColumn('EmploiDuTemps', 'heure_fin', {
       type: Sequelize.TIME,
       allowNull: false
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('emploiedutemps', 'heure_fin');
+    await queryInterface.removeColumn('EmploiDuTemps', 'heure_fin');
   }
 };

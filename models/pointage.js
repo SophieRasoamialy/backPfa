@@ -30,13 +30,14 @@ Pointage.init(
     },
     pointage_sortie: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      defaulValue: null,
     },
   },
   {
     sequelize,
     modelName: 'Pointage',
-    tableName: 'pointages'
+    tableName: 'Pointages'
   }
 );
 

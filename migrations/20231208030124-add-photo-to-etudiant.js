@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('etudiants', 'photo_etudiant', {
+    await queryInterface.addColumn('Etudiants', 'photo_etudiant', {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: 'images/visaaa.jpg'
@@ -11,6 +11,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('etudiants', 'photo_etudiant');
+    await queryInterface.removeColumn('Etudiants', 'photo_etudiant');
   }
 };

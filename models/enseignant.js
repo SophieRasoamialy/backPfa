@@ -27,7 +27,7 @@ Enseignant.init(
   {
     sequelize,
     modelName: 'Enseignant',
-    tableName: 'enseignants',
+    tableName: 'Enseignants',
   }
 );
 
