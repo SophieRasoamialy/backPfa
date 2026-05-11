@@ -22,8 +22,7 @@ Niveau.init(
   {
     sequelize,
     modelName: 'Niveau',
-    tableName: 'Niveaux',
-    timestamps: false // Si vous ne voulez pas de timestamps
+    tableName: 'Niveaux'
   }
 );
 

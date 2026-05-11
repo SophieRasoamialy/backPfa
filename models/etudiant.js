@@ -25,7 +25,8 @@ Etudiant.init(
     },
     photo_etudiant: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 'images/visaaa.jpg'
     },
     id_niveau: {
       type: DataTypes.INTEGER,

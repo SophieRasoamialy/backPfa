@@ -2,9 +2,12 @@
   "name": "back-projet",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "check": "node --check app.js && for f in controllers/*.js routes/*.js models/*.js config/*.js migrations/*.js middlewares/*.js services/*.js utils/*.js docs/*.js; do node --check \"$f\"; done",
+    "test": "npm run check",
+    "test:e2e": "node --test tests/e2e/api.e2e.test.js"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +19,9 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.12.0",
     "pg": "^8.11.3",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",

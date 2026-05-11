@@ -1,30 +1,62 @@
 const express = require('express');
-const router = express.Router();
 const enseignantController = require('../controllers/enseignantController');
 
-// Routes pour les enseignants
-router.post('/', (req, res) => {
-  enseignantController.createEnseignant(req, res);
-});
+const router = express.Router();
 
-router.get('/', (req, res) => {
-  enseignantController.getEnseignantsPagine(req, res);
-});
+/**
+ * @swagger
+ * /api/enseignants:
+ *   get:
+ *     tags: [Enseignants]
+ *     summary: Lister les enseignants paginés
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *   post:
+ *     tags: [Enseignants]
+ *     summary: Créer un enseignant
+ */
+router.route('/')
+  .get(enseignantController.getEnseignantsPagine)
+  .post(enseignantController.create);
 
-router.get('/list', (req,res) => {
-  enseignantController.getAllEnseignants(req,res);
-});
+/**
+ * @swagger
+ * /api/enseignants/list:
+ *   get:
+ *     tags: [Enseignants]
+ *     summary: Lister tous les enseignants
+ */
+router.get('/list', enseignantController.getAllEnseignants);
 
-router.get('/:enseignantId', (req, res) => {
-  enseignantController.getEnseignantById(req, res);
-});
-
-router.put('/:enseignantId', (req, res) => {
-  enseignantController.updateEnseignant(req, res);
-});
-
-router.delete('/:enseignantId', (req, res) => {
-  enseignantController.deleteEnseignant(req, res);
-});
+/**
+ * @swagger
+ * /api/enseignants/{enseignantId}:
+ *   get:
+ *     tags: [Enseignants]
+ *     summary: Récupérer un enseignant
+ *     parameters:
+ *       - in: path
+ *         name: enseignantId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *   put:
+ *     tags: [Enseignants]
+ *     summary: Mettre à jour un enseignant
+ *   delete:
+ *     tags: [Enseignants]
+ *     summary: Supprimer un enseignant
+ */
+router.route('/:enseignantId')
+  .get(enseignantController.getById)
+  .put(enseignantController.update)
+  .delete(enseignantController.remove);
 
 module.exports = router;

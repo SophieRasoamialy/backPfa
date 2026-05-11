@@ -1,26 +1,44 @@
 const express = require('express');
-const router = express.Router();
 const niveauController = require('../controllers/niveauController');
 
-// Routes
-router.post('/', (req, res) => {
-  niveauController.createNiveau(req, res); // Appel de la fonction avec req et res
-});
+const router = express.Router();
 
-router.get('/', (req, res) => {
-  niveauController.getAllNiveaux(req, res); // Appel de la fonction avec req et res
-});
+/**
+ * @swagger
+ * /api/niveaux:
+ *   get:
+ *     tags: [Niveaux]
+ *     summary: Lister les niveaux
+ *   post:
+ *     tags: [Niveaux]
+ *     summary: Créer un niveau
+ */
+router.route('/')
+  .get(niveauController.list)
+  .post(niveauController.create);
 
-router.get('/:niveauId', (req, res) => {
-  niveauController.getNiveauById(req, res); // Appel de la fonction avec req et res
-});
-
-router.put('/:niveauId', (req, res) => {
-  niveauController.updateNiveau(req, res); // Appel de la fonction avec req et res
-});
-
-router.delete('/:niveauId', (req, res) => {
-  niveauController.deleteNiveau(req, res); // Appel de la fonction avec req et res
-});
+/**
+ * @swagger
+ * /api/niveaux/{niveauId}:
+ *   get:
+ *     tags: [Niveaux]
+ *     summary: Récupérer un niveau
+ *     parameters:
+ *       - in: path
+ *         name: niveauId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *   put:
+ *     tags: [Niveaux]
+ *     summary: Mettre à jour un niveau
+ *   delete:
+ *     tags: [Niveaux]
+ *     summary: Supprimer un niveau
+ */
+router.route('/:niveauId')
+  .get(niveauController.getById)
+  .put(niveauController.update)
+  .delete(niveauController.remove);
 
 module.exports = router;

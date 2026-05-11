@@ -1,21 +1,50 @@
 const express = require('express');
-const router = express.Router();
 const emploiTempsController = require('../controllers/edtControlleur');
 
-// Route pour créer un nouvel emploi du temps
-router.post('/', emploiTempsController.createEmploiTemps);
+const router = express.Router();
 
-// Route pour récupérer tous les emplois du temps par niveau
-router.get('/:niveau', emploiTempsController.getAllEmploiTemps);
+/**
+ * @swagger
+ * /api/edt:
+ *   post:
+ *     tags: [Emploi du temps]
+ *     summary: Créer un emploi du temps
+ */
+router.post('/', emploiTempsController.create);
 
+/**
+ * @swagger
+ * /api/edt/etudiant/{niveau}:
+ *   get:
+ *     tags: [Emploi du temps]
+ *     summary: Lister l'emploi du temps d'un étudiant pour un niveau
+ */
 router.get('/etudiant/:niveau', emploiTempsController.getAllEmploiTempsEtudiant);
-// Route pour récupérer un emploi du temps par son IDe
-router.get('/id/:edtId', emploiTempsController.getEmploiTempsById);
 
-// Route pour mettre à jour un emploi du temps par son ID
-router.put('/:edtId', emploiTempsController.updateEmploiTemps);
+/**
+ * @swagger
+ * /api/edt/id/{edtId}:
+ *   get:
+ *     tags: [Emploi du temps]
+ *     summary: Récupérer un emploi du temps par identifiant
+ *   put:
+ *     tags: [Emploi du temps]
+ *     summary: Mettre à jour un emploi du temps
+ *   delete:
+ *     tags: [Emploi du temps]
+ *     summary: Supprimer un emploi du temps
+ */
+router.get('/id/:edtId', emploiTempsController.getById);
+router.put('/id/:edtId', emploiTempsController.update);
+router.delete('/id/:edtId', emploiTempsController.remove);
 
-// Route pour supprimer un emploi du temps par son ID
-router.delete('/:edtId', emploiTempsController.deleteEmploiTemps);
+/**
+ * @swagger
+ * /api/edt/{niveau}:
+ *   get:
+ *     tags: [Emploi du temps]
+ *     summary: Lister les emplois du temps d'un niveau entre deux dates
+ */
+router.get('/:niveau', emploiTempsController.getAllEmploiTemps);
 
 module.exports = router;

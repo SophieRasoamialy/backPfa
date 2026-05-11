@@ -19,7 +19,7 @@ EmploiDuTemps.init(
       autoIncrement: true
     },
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     heure: {

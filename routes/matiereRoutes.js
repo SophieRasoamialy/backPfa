@@ -1,30 +1,59 @@
 const express = require('express');
-const router = express.Router();
 const matiereController = require('../controllers/matiereController');
 
-// Routes pour les matières
-router.post('/', (req, res) => {
-  matiereController.createMatiere(req, res);
-});
+const router = express.Router();
 
-router.get('/', (req, res) => {
-  matiereController.getAllMatieres(req, res);
-});
+/**
+ * @swagger
+ * /api/matieres:
+ *   get:
+ *     tags: [Matières]
+ *     summary: Lister toutes les matières
+ *   post:
+ *     tags: [Matières]
+ *     summary: Créer une matière
+ */
+router.route('/')
+  .get(matiereController.list)
+  .post(matiereController.create);
 
-router.get('/niveau/:niveau', (req, res) => {
-  matiereController.getMatieresByNiveau(req, res);
-});
+/**
+ * @swagger
+ * /api/matieres/niveau/{niveau}:
+ *   get:
+ *     tags: [Matières]
+ *     summary: Lister les matières d'un niveau
+ *     parameters:
+ *       - in: path
+ *         name: niveau
+ *         required: true
+ *         schema:
+ *           type: integer
+ */
+router.get('/niveau/:niveau', matiereController.getMatieresByNiveau);
 
-router.get('/:matiereId', (req, res) => {
-  matiereController.getMatiereById(req, res);
-});
-
-router.put('/:matiereId', (req, res) => {
-  matiereController.updateMatiere(req, res);
-});
-
-router.delete('/:matiereId', (req, res) => {
-  matiereController.deleteMatiere(req, res);
-});
+/**
+ * @swagger
+ * /api/matieres/{matiereId}:
+ *   get:
+ *     tags: [Matières]
+ *     summary: Récupérer une matière
+ *     parameters:
+ *       - in: path
+ *         name: matiereId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *   put:
+ *     tags: [Matières]
+ *     summary: Mettre à jour une matière
+ *   delete:
+ *     tags: [Matières]
+ *     summary: Supprimer une matière
+ */
+router.route('/:matiereId')
+  .get(matiereController.getById)
+  .put(matiereController.update)
+  .delete(matiereController.remove);
 
 module.exports = router;
