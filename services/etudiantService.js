@@ -6,6 +6,12 @@ const Pointage = require('../models/pointage');
 const sequelize = require('../config/sequelize');
 const AppError = require('../utils/appError');
 const createCrudService = require('./crudService');
+const {
+  createResetToken,
+  hashPassword,
+  hashResetToken,
+  verifyPassword,
+} = require('../utils/password');
 
 const crudService = createCrudService(Etudiant, {
   idField: 'id_etudiant',
@@ -39,6 +45,117 @@ async function exists(etudiantId) {
   return {
     exists: Boolean(etudiant),
     message: etudiant ? 'Étudiant trouvé' : 'Étudiant non trouvé',
+  };
+}
+
+async function create(payload) {
+  const nextPayload = { ...payload };
+
+  if (nextPayload.password) {
+    nextPayload.password = await hashPassword(nextPayload.password);
+  }
+
+  return crudService.create(nextPayload);
+}
+
+async function updateById(etudiantId, payload) {
+  const nextPayload = { ...payload };
+
+  if (nextPayload.password) {
+    nextPayload.password = await hashPassword(nextPayload.password);
+  } else {
+    delete nextPayload.password;
+  }
+
+  return crudService.updateById(etudiantId, nextPayload);
+}
+
+async function login({ email, password }) {
+  if (!email || !password) {
+    throw new AppError('Email et mot de passe requis', 400);
+  }
+
+  const etudiant = await Etudiant.findOne({ where: { email } });
+
+  if (!etudiant || !etudiant.password) {
+    throw new AppError('Identifiants invalides', 401);
+  }
+
+  const passwordMatches = await verifyPassword(password, etudiant.password);
+
+  if (!passwordMatches) {
+    throw new AppError('Identifiants invalides', 401);
+  }
+
+  if (!etudiant.password.includes(':')) {
+    etudiant.password = await hashPassword(password);
+    await etudiant.save();
+  }
+
+  return {
+    id_etudiant: etudiant.id_etudiant,
+    email: etudiant.email,
+    nom_etudiant: etudiant.nom_etudiant,
+    prenom_etudiant: etudiant.prenom_etudiant,
+    role: 'student',
+  };
+}
+
+async function forgotPassword({ email }) {
+  if (!email) {
+    throw new AppError('Email requis', 400);
+  }
+
+  const etudiant = await Etudiant.findOne({ where: { email } });
+
+  if (!etudiant) {
+    return {
+      message: 'Si ce compte existe, un lien de reinitialisation a ete genere.',
+    };
+  }
+
+  const resetToken = createResetToken();
+  etudiant.reset_password_token = hashResetToken(resetToken);
+  etudiant.reset_password_expires_at = new Date(Date.now() + 60 * 60 * 1000);
+  await etudiant.save();
+
+  return {
+    message: 'Token de reinitialisation genere.',
+    resetToken,
+    expiresAt: etudiant.reset_password_expires_at,
+  };
+}
+
+async function resetPassword({ token, password, confirmPassword }) {
+  if (!token || !password || !confirmPassword) {
+    throw new AppError('Token, mot de passe et confirmation requis', 400);
+  }
+
+  if (password !== confirmPassword) {
+    throw new AppError('Les mots de passe ne correspondent pas', 400);
+  }
+
+  const etudiant = await Etudiant.findOne({
+    where: {
+      reset_password_token: hashResetToken(token),
+    },
+  });
+
+  if (
+    !etudiant ||
+    !etudiant.reset_password_expires_at ||
+    etudiant.reset_password_expires_at.getTime() < Date.now()
+  ) {
+    throw new AppError('Token de reinitialisation invalide ou expire', 400);
+  }
+
+  etudiant.password = await hashPassword(password);
+  etudiant.reset_password_token = null;
+  etudiant.reset_password_expires_at = null;
+  await etudiant.save();
+
+  return {
+    message: 'Mot de passe reinitialise avec succes.',
   };
 }
 
@@ -210,8 +327,13 @@ async function getPhoto(etudiantId) {
 
 module.exports = {
   ...crudService,
+  create,
+  updateById,
   getStudentLevelId,
   exists,
+  login,
+  forgotPassword,
+  resetPassword,
   listAbsences,
   listAttendanceStatusByLevel,
   getPresenceCount,

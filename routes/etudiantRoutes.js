@@ -1,5 +1,6 @@
 const express = require('express');
 const etudiantController = require('../controllers/etudiantController');
+const authEtudiantController = require('../controllers/authEtudiantController');
 
 const router = express.Router();
 
@@ -17,6 +18,9 @@ router.route('/')
   .get(etudiantController.getAllEtudiants)
   .post(etudiantController.create);
 
+router.post('/auth/login', authEtudiantController.login);
+router.post('/auth/forgot-password', authEtudiantController.forgotPassword);
+router.post('/auth/reset-password', authEtudiantController.resetPassword);
 router.get('/etudiants', etudiantController.getAllEtudiants);
 router.get('/check/:etudiantId', etudiantController.checkIfEtudiantExists);
 router.get('/niveau/:levelId/etudiants', etudiantController.getStudentsWithAbsenceCountByLevelHandler);

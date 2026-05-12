@@ -26,5 +26,7 @@ const router = express.Router();
  *         description: Administrateur connecté
  */
 router.post('/login', adminController.login);
+router.post('/forgot-password', adminController.forgotPassword);
+router.post('/reset-password', adminController.resetPassword);
 
 module.exports = router;

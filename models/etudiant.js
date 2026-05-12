@@ -23,10 +23,27 @@ Etudiant.init(
       type: DataTypes.STRING,
       allowNull: false
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     photo_etudiant: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'images/visaaa.jpg'
+    },
+    reset_password_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    reset_password_expires_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     id_niveau: {
       type: DataTypes.INTEGER,
