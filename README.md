@@ -1,42 +1,205 @@
-# Introduction
-This is the backend of the i-Presencia application. Here is the link to the application:
-This is the frontend github link : https://github.com/SophieRasoamialy/FrontPfa.git
+# Facecheck Backend
 
-# i-Presencia
-i-Presencia is an innovative application designed to streamline the student attendance process using facial recognition. With FaceCheck, students can mark their presence in class quickly, accurately, and securely, eliminating the need for ID cards or manual signatures. Save time and ensure student attendance with FaceCheck.
+Backend Node.js / Express de l'application **Facecheck / iPresencia**.
 
-## Features
+Ce service expose l'API utilisée par le frontend pour :
+- l'authentification administrateur et étudiant
+- la gestion des étudiants, enseignants, matières et emplois du temps
+- le pointage d'entrée et de sortie
+- le suivi de présence, d'absences et d'assiduité
 
-- Facial recognition for student attendance
-- Quick and accurate attendance tracking
-- Secure authentication and data handling
+## Stack technique
 
-## Technologies Used
+- Node.js
+- Express.js
+- Sequelize
+- MySQL
+- Swagger pour la documentation API
 
-- Backend: Express.js
-- Node.js version: v18.16.1
+## Structure
 
-## Setup Instructions
+- `app.js` : point d'entrée du serveur
+- `routes/` : routes Express
+- `controllers/` : contrôleurs HTTP
+- `services/` : logique métier
+- `models/` : modèles Sequelize
+- `migrations/` : migrations base de données
+- `seeders/` : données de test
+- `middlewares/` : gestion d'erreurs et middlewares
+- `docs/` : configuration Swagger
 
-1. Clone the repository:
-```
-git clone https://github.com/SophieRasoamialy/backPfa.git
-```
+## Prérequis
 
-2. Navigate to the project directory:
-```
-cd backPfa
-```
+- Node.js 18+ recommandé
+- MySQL démarré
+- une base de données configurée pour le projet
 
-3. Install dependencies for backend:
+## Installation
 
-```
+```bash
+cd Facecheck-backend
 npm install
 ```
 
-4. Start the backend servers:
+## Variables d'environnement
 
-In the backend directory
+Créer un fichier `.env` dans `Facecheck-backend/`.
+
+Exemple minimal :
+
+```env
+PORT=8000
+FRONTEND_URL=http://localhost:3000
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=facecheck
+DB_USER=root
+DB_PASSWORD=mot_de_passe
+DB_DIALECT=mysql
 ```
-node app.js
+
+Adapte les valeurs à ta base locale.
+
+## Lancer le serveur
+
+```bash
+npm start
+```
+
+Le backend démarre par défaut sur :
+
+```text
+http://localhost:8000
+```
+
+## Endpoints utiles
+
+- Santé du serveur :
+
+```text
+GET /health
+```
+
+- Documentation Swagger :
+
+```text
+GET /api/docs
+```
+
+## Migrations
+
+Avant de tester l'application, applique les migrations :
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+## Seeders
+
+### Seeder administrateur
+
+```bash
+npx sequelize-cli db:seed --seed seeders/admin.js
+```
+
+Compte créé :
+
+- email : `admin@facecheck.local`
+- mot de passe : `Admin1234!`
+
+### Seeder étudiant
+
+Assure-toi d'avoir au moins un niveau en base.
+
+```bash
+npx sequelize-cli db:seed --seed seeders/niveau.js
+npx sequelize-cli db:seed --seed seeders/student-account.js
+```
+
+Compte créé :
+
+- email : `etudiant@facecheck.local`
+- mot de passe : `Etudiant1234!`
+
+### Autres seeders disponibles
+
+- `seeders/niveau.js`
+- `seeders/enseignant.js`
+- `seeders/matiere.js`
+- `seeders/salle.js`
+- `seeders/etudiant.js`
+- `seeders/emploiedutemps.js`
+- `seeders/pointage.js`
+
+## Scripts utiles
+
+Vérification syntaxique :
+
+```bash
+npm test
+```
+
+Tests e2e :
+
+```bash
+npm run test:e2e
+```
+
+## Fonctionnalités actuellement disponibles
+
+### Authentification
+
+- connexion administrateur par email / mot de passe
+- connexion étudiant par email / mot de passe
+- mot de passe oublié
+- réinitialisation de mot de passe
+
+### Administration
+
+- gestion des emplois du temps
+- gestion des étudiants
+- gestion des enseignants
+- gestion des matières
+
+### Étudiant
+
+- consultation de l'emploi du temps hebdomadaire
+- pointage d'entrée et de sortie
+- consultation du dashboard de présence
+- consultation des cours manqués
+
+## Ordre de démarrage conseillé
+
+```bash
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed --seed seeders/niveau.js
+npx sequelize-cli db:seed --seed seeders/admin.js
+npx sequelize-cli db:seed --seed seeders/student-account.js
+npm start
+```
+
+## Dépannage rapide
+
+### Erreur `Unknown column ...`
+
+Les modèles ont changé mais la base n'est pas à jour. Rejoue les migrations :
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+### Erreur CORS
+
+Vérifie que :
+
+- le frontend tourne bien sur `http://localhost:3000`
+- `FRONTEND_URL=http://localhost:3000` dans le `.env`
+
+### Port backend différent
+
+Si tu veux lancer le backend sur un autre port :
+
+```bash
+PORT=8001 npm start
 ```
